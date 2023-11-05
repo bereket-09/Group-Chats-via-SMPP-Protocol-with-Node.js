@@ -1,10 +1,11 @@
-**SMSphere - Enchanting Group Chats via SMPP Protocol with Node.js**
+**SMSphere - Group Chats via SMPP Protocol with Node.js**
+
 SMSphere is an enchanting group chat platform that leverages the power of the SMPP (Short Message Peer-to-Peer) protocol and Node.js backend. It enables users to engage in seamless and delightful group conversations through SMS messaging.
 
+**I created this project as a concept idea and will try to build upon it more and more as time goes by.**
 
-I created this project as a concept idea and will try to build upon it more and more as time goes by.
 
-**Features**
+***Features***
 
 **Create Group:** Create a group with a unique shortcode and send welcome SMS to all group members.
 **Add User:** Add a user to an existing group, sending notifications to all group members and a separate welcome SMS to the new user.
