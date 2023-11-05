@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "3882c0fe-acbf-48d2-a81d-d018723622a3",
+		"name": "Group Chat API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21051828"
+	},
+	"item": [
+		{
+			"name": "Create Group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"groupName\": \"My Group\",\n   \"users\": [\n      \"+123456789\",\n      \"+987654321\"\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{url}}/groups/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"groups",
+						"create"
+					]
+				},
+				"description": "Create a new group"
+			},
+			"response": []
+		},
+		{
+			"name": "Add User to A group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"shortcode\": \"WZWCBS\",\n   \"user\":\"+251700407022\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/groups/users/add",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"groups",
+						"users",
+						"add"
+					]
+				},
+				"description": "Create a new group"
+			},
+			"response": []
+		},
+		{
+			"name": "Send SMS Message to Group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"shortcode\":\"EE2C2D\",\n   \"sender\": \"+123456789\",\n   \"message\": \"Hello, group!\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/groups/send-sms",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"groups",
+						"send-sms"
+					]
+				},
+				"description": "Send an SMS message to a group"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove User from Group",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/groups/MYGROUP/users/+222222222",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"groups",
+						"MYGROUP",
+						"users",
+						"+222222222"
+					]
+				},
+				"description": "Remove a user from a group"
+			},
+			"response": []
+		},
+		{
+			"name": "List groups per user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"msisdn\":\"+1232456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/list-groups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"list-groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Groups",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "List Memebers of A group",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Chat Hisotry for Shortcode",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "{{url}}",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
