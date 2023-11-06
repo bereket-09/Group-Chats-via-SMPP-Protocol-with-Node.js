@@ -413,10 +413,11 @@ app.post("/groups/users/add", async (req, res) => {
   }
 });
 
+
 // Remove User from Group endpoint
 app.delete("/groups/users/delete", async (req, res) => {
   const shortcode = req.body.shortcode;
-  let user = req.body.user;
+  let user = req.body.msisdn;
 
   // Validate and format the user
   user = formatUser(user);
@@ -428,19 +429,69 @@ app.delete("/groups/users/delete", async (req, res) => {
   }
 
   try {
-    const result = await Group.updateOne(
-      { shortcode },
-      { $pull: { users: user } }
-    );
-    if (result.matchedCount === 0) {
+    // Find the group
+    const group = await Group.findOne({ shortcode });
+    if (!group) {
       res
         .status(404)
-        .json({ success: false, message: "Group not found", code: 404 });
+        .json({ code: 404, success: false, message: "Group not found" });
+      return;
+    }
+
+    // Check if the user is the group owner
+    if (group.groupOwner === user) {
+      res
+        .status(400)
+        .json({
+          code: 400,
+          success: false,
+          message: "Cannot remove group owner from the group",
+        });
+      return;
+    }
+
+    // Check if the user is a member of the group
+    if (!group.members.includes(user)) {
+      res
+        .status(404)
+        .json({
+          code: 404,
+          success: false,
+          message: "User not found in the group",
+        });
+      return;
+    }
+
+    // Remove the user from the group
+    const groupUpdateResult = await Group.updateOne(
+      { shortcode },
+      { $pull: { members: user } }
+    );
+    if (groupUpdateResult.nModified === 0) {
+      res
+        .status(404)
+        .json({
+          code: 404,
+          success: false,
+          message: "User not found in the group",
+        });
+      return;
+    }
+
+    // Remove the group from the user's collection
+    const userUpdateResult = await User.updateOne(
+      { username: user },
+      { $pull: { groups: { shortcode } } }
+    );
+    if (userUpdateResult.nModified === 0) {
+      res
+        .status(404)
+        .json({ code: 404, success: false, message: "User not found" });
       return;
     }
 
     // Get the updated group after removing the user
-    const group = await Group.findOne({ shortcode });
+    const updatedGroup = await Group.findOne({ shortcode });
 
     // Construct the updated response body
     const responseBody = {
@@ -448,21 +499,23 @@ app.delete("/groups/users/delete", async (req, res) => {
       success: true,
       message: "User removed successfully",
       shortcode: shortcode,
-      totalUsers: group.members.length,
-      group: group,
+      totalUsers: updatedGroup.members.length,
+      group: updatedGroup,
     };
 
     res.status(200).json(responseBody);
   } catch (err) {
     console.error(err);
     res.status(500).json({
+      code: 500,
       success: false,
       message: "Error updating group data in MongoDB",
       error: err,
-      code: 500,
     });
   }
 });
+
+
 
 // Get User Groups endpoint
 app.post("/users/list-groups", async (req, res) => {
