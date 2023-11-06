@@ -517,6 +517,7 @@ app.delete("/groups/users/delete", async (req, res) => {
 
 
 
+
 // Get User Groups endpoint
 app.post("/users/list-groups", async (req, res) => {
   let username = req.body.msisdn;
